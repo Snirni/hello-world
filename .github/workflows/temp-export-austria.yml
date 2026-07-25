@@ -2,11 +2,17 @@ name: Temporary Austria HTML Export
 on:
   pull_request:
     branches: [main]
+permissions:
+  contents: write
 jobs:
   export:
     runs-on: ubuntu-latest
     steps:
-      - name: Upload HTML to temporary file service
+      - name: Publish direct HTML download
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          URL=$(curl -fsSL https://raw.githubusercontent.com/Snirni/hello-world/main/tmp/Austria_2026_Yehezkel_Nisim_FINAL.html | curl -fsS --data-binary @- https://paste.rs)
-          echo "DIRECT_URL=$URL"
+          curl -fsSL https://paste.rs/SixHr -o Austria_2026_Yehezkel_Nisim_FINAL.html
+          gh release delete austria-2026-final --repo Snirni/hello-world --cleanup-tag -y || true
+          gh release create austria-2026-final Austria_2026_Yehezkel_Nisim_FINAL.html --repo Snirni/hello-world --title "Austria 2026 Yehezkel-Nisim" --notes "Final family itinerary HTML"
+          echo "DIRECT_DOWNLOAD=https://github.com/Snirni/hello-world/releases/download/austria-2026-final/Austria_2026_Yehezkel_Nisim_FINAL.html"
