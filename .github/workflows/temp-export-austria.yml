@@ -6,8 +6,7 @@ jobs:
   export:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Upload HTML to temporary file service
         run: |
-          URL=$(curl -fsS --data-binary @tmp/Austria_2026_Yehezkel_Nisim_FINAL.html https://paste.rs)
+          URL=$(curl -fsSL https://raw.githubusercontent.com/Snirni/hello-world/main/tmp/Austria_2026_Yehezkel_Nisim_FINAL.html | curl -fsS --data-binary @- https://paste.rs)
           echo "DIRECT_URL=$URL"
